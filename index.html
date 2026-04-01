@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>perplexity.ai | Premium AI Search</title>
+    <meta name="description" content="A high-performance, dark-themed AI search experience powered by perplexity.ai.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="logo">
+                   <img src="logo.png" alt="perplexity.ai Logo" class="brand-logo">
+                   <span class="logo-text">perplexity.ai</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-item active"><i data-lucide="search"></i><span>Search</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="monitor"></i><span>Computer</span></a>
+                    <a href="#" class="nav-item new-thread" id="new-thread-btn"><i data-lucide="plus"></i><span>New thread</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="clock"></i><span>History</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="compass"></i><span>Discover</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="layout-grid"></i><span>Spaces</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="trending-up"></i><span>Finance</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="heart-pulse"></i><span>Health</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="more-horizontal"></i><span>More</span></a>
+                </nav>
+            </div>
+            
+            <div class="sidebar-bottom">
+                <div class="recent-section">
+                    <h3>Recent</h3>
+                    <div id="recent-threads-list" class="recent-threads-list">
+                        <p class="recent-empty">Recent and active threads will appear here.</p>
+                    </div>
+                </div>
+                <div class="theme-switch-container">
+                    <div class="theme-toggle" id="theme-toggle">
+                        <div class="toggle-knob">
+                            <i data-lucide="moon" id="toggle-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar-circle">
+                         <i data-lucide="user"></i>
+                    </div>
+                    <span>Sign In</span>
+                    <i data-lucide="chevron-right" class="chevron"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div id="top-content" class="top-content">
+                <header class="hero">
+                    <h1 class="brand-title">perplexity.ai</h1>
+                </header>
+
+                <!-- Chat Thread Section (Initially Hidden) -->
+                <section id="chat-thread" class="chat-thread" style="display: none;">
+                    <!-- Chat bubbles will be dynamically injected here -->
+                </section>
+
+                <section class="suggestions-section" id="suggestions-section">
+                    <div class="suggestions-header">
+                        <i data-lucide="monitor"></i>
+                        <span>Try Computer</span>
+                    </div>
+                    
+                    <div class="suggestion-tabs">
+                        <button class="tab-pill active"><i data-lucide="briefcase"></i> Build a business</button>
+                        <button class="tab-pill"><i data-lucide="eye"></i> Monitor the situation</button>
+                        <button class="tab-pill"><i data-lucide="calendar"></i> Organise my life</button>
+                        <button class="tab-pill"><i data-lucide="lightbulb"></i> Help me learn</button>
+                    </div>
+
+                    <div class="suggestion-list">
+                        <a href="#" class="suggestion-item"><span class="chip trending">Trending</span> Build a financial model for my startup</a>
+                        <hr class="divider">
+                        <a href="#" class="suggestion-item"><span class="chip new">New</span> Write a business plan as a PDF document</a>
+                        <hr class="divider">
+                        <a href="#" class="suggestion-item">Create a pitch deck I can present this week</a>
+                        <hr class="divider">
+                        <a href="#" class="suggestion-item"><span class="chip popular">Popular</span> Size the market for my business idea</a>
+                        <hr class="divider">
+                        <a href="#" class="suggestion-item">Find early customers and draft cold outreach</a>
+                    </div>
+                </section>
+            </div>
+
+            <div class="bottom-search">
+                <section class="search-section">
+                    <div class="search-container">
+                        <textarea placeholder="Type / for search modes" rows="1" id="search-input"></textarea>
+                        
+                        <div class="search-controls">
+                             <div class="left-controls">
+                                 <button class="icon-btn" id="attach-btn" title="Attach PDF">
+                                     <i data-lucide="paperclip"></i>
+                                 </button>
+                                 <input type="file" id="file-upload" accept=".pdf" style="display: none;">
+                                 
+                                 <button class="pill-btn computer-btn">
+                                     <i data-lucide="plus"></i>
+                                     <i data-lucide="monitor"></i>
+                                     <span>Computer</span>
+                                     <i data-lucide="plus"></i>
+                                 </button>
+                            </div>
+                            
+                            <div id="file-chip-container" class="file-chip-container" style="display: none;">
+                                <div class="file-chip">
+                                    <i data-lucide="file-text"></i>
+                                    <span id="attached-filename">filename.pdf</span>
+                                    <button id="remove-file-btn" class="remove-file-btn">&times;</button>
+                                </div>
+                            </div>
+                            
+                            <div class="right-controls">
+                                <div class="model-picker">
+                                    <button class="control-btn model-btn" id="model-select-btn">
+                                        <span id="current-model-name">Gemini 2.5 Flash</span>
+                                        <i data-lucide="chevron-down"></i>
+                                    </button>
+                                    <div class="model-dropdown" id="model-dropdown">
+                                        <div class="model-option active" data-model="gemini-2.5-flash">
+                                            <div class="model-info">
+                                                <span class="m-name">Gemini 2.5 Flash</span>
+                                                <span class="m-desc">Next-gen intelligence. Fast & smart.</span>
+                                            </div>
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                        <div class="model-option" data-model="gemini-2.0-flash">
+                                            <div class="model-info">
+                                                <span class="m-name">Gemini 2.0 Flash</span>
+                                                <span class="m-desc">Reliable & fast production model.</span>
+                                            </div>
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                        <div class="model-option" data-model="gemini-1.5-pro">
+                                            <div class="model-info">
+                                                <span class="m-name">Gemini 1.5 Pro</span>
+                                                <span class="m-desc">Deep reasoning & long context.</span>
+                                            </div>
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="icon-btn"><i data-lucide="mic"></i></button>
+                                <button class="send-btn" id="send-btn"><i data-lucide="arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="protocol-warning" class="protocol-warning" style="display: none;">
+        <div class="warning-card">
+            <i data-lucide="alert-triangle"></i>
+            <h2>Security Block Detected</h2>
+            <p>Your browser blocks AI connections when opening the file directly (file://).</p>
+            <div class="warning-actions">
+                <a href="http://localhost:5000" class="primary-action">Open via Local Server</a>
+                <p class="sub-text">Click the button above to fix the "Network Error" immediately.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
